@@ -24,8 +24,8 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.controller = controller
         self.setWindowTitle("Inventory System") # Sets title of window
+        self.resize(1700, 1000) # Sets window size
         
-        self.resize(1200, 900) # Sets window size
         # Obtains screen geometry
         screen = QApplication.primaryScreen()
         screen_geometry = screen.availableGeometry()
@@ -44,12 +44,14 @@ class MainWindow(QMainWindow):
         main_layout = QHBoxLayout()
         main_widget.setLayout(main_layout)
         
-        
-                
-        window_names = ["home", 'inventory', 'blue']
-        # Sidebar (navigation bar)
+        # Sidebar (navigation bar)       
+        window_names = ['Home', 'Search Products', 'Inventory', 'Orders',]
         sidebar = Sidebar(window_names)
         main_layout.addWidget(sidebar)
+        
+        # Main content layout (label)
+        content_layout = QVBoxLayout()  # Create a vertical layout for the content
+        main_layout.addLayout(content_layout)  # Add the content layout to the main layout
         
         # Add main label overhead
         self.label = QLabel("Inventory Management System") # Sets the text inside the label

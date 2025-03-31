@@ -1,4 +1,6 @@
+from PyQt6.QtWidgets import QApplication
 
+from sidebar import *
 
 
 class Controller:
@@ -12,5 +14,9 @@ class Controller:
     
     """
     def __init__(self):
-        """Initalize the controller """ # SHOULD load whatever is on main window if anythin
+        """Initalize the controller """ # SHOULD load whatever is on main window if anything
         pass
+    
+    def exit_app(self):
+        print('Exiting System.')
+        QApplication.quit()
