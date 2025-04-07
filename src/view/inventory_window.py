@@ -10,7 +10,7 @@ from PyQt6.QtGui import QScreen
 from sidebar import *
 
 
-class MainWindow(QMainWindow):
+class InventoryWindow(QWidget):
     '''
     The main window of the inventory system.
     '''
@@ -39,10 +39,8 @@ class MainWindow(QMainWindow):
         self.setStyleSheet('background-color: #FAECE2;') # Off White Color
         
         # Main Layout
-        main_widget = QWidget()
-        self.setCentralWidget(main_widget)
         main_layout = QHBoxLayout()
-        main_widget.setLayout(main_layout)
+        self.setLayout(main_layout)
         
         # Sidebar (navigation bar)       
         window_names = ['Home', 'Search Products', 'Inventory', 'Orders',]
@@ -54,7 +52,7 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(content_layout)  # Add the content layout to the main layout
         
         # Add main label overhead
-        self.label = QLabel("Inventory Management System") # Sets the text inside the label
+        self.label = QLabel("Inventory Window") # Sets the text inside the label
         self.label.setFont(QFont("Roboto", 32)) # Sets label in "roboto" style with a 32 point font
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter) # Centers the label
         self.label.setStyleSheet('color: #228B22;') # Sets label text color to dark green

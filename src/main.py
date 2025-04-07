@@ -10,7 +10,7 @@ import controller.controller as ctr
 - 
 """
 if __name__ == "__main__":
-    app = QApplication(sys.argv) # Initializes QApplication
+    app = QApplication(sys.argv)
     
     controller = ctr.Controller() # Initializes the controller
     window = mw.MainWindow(controller) # Creates the main window

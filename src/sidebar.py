@@ -2,11 +2,11 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 
-from controller.controller import Controller
-
 class Sidebar(QWidget):
-    def __init__(self, window_names, parent=None):
+    def __init__(self, window_names, controller, parent=None):
         super().__init__(parent)
+
+        self.controller = controller
 
         # Create layout for sidebar 
         self.layout = QVBoxLayout()
@@ -23,6 +23,17 @@ class Sidebar(QWidget):
             button.setFont(QFont('Roboto', 12))
             self.layout.addWidget(button)
             
+            # Connect the button to the controller's corresponding method
+            if window_name == "Orders":
+                button.clicked.connect(self.controller.open_order)
+            elif window_name == "Search Products":
+                button.clicked.connect(self.controller.open_search)
+            elif window_name == "Inventory":
+                button.clicked.connect(self.controller.open_inventory)
+            elif window_name == "Home":
+                button.clicked.connect(self.controller.open_home)
+            # window_names = ['Home', 'Search Products', 'Inventory', 'Orders',]
+            
         self.layout.addStretch()
         
         # Create Exit button on bottom of sidebar
@@ -33,7 +44,7 @@ class Sidebar(QWidget):
         exit_button.setFont(QFont('Roboto', 12))
         self.layout.addWidget(exit_button)
         
-        exit_button.clicked.connect(Controller.exit_app)
+        exit_button.clicked.connect(self.controller.exit_app)
         
         # Align buttons to the top
         self.layout.setAlignment(Qt.AlignmentFlag.AlignTop)
