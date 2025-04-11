@@ -36,7 +36,7 @@ class SearchWindow(QWidget):
         self.setGeometry(x, y, self.width(), self.height())
         
         # Set background color
-        self.setStyleSheet('background-color: #FAECE2;') # Off White Color
+        self.setStyleSheet('background-color: #FAF9F6;') # Off White Color
         
         # Main Layout
         main_layout = QHBoxLayout()
