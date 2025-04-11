@@ -47,7 +47,7 @@ class OrderWindow(QWidget):
         self.setLayout(main_layout)
         
         # Sidebar (navigation bar)       
-        window_names = ['Home', 'Search Products', 'Inventory', 'Orders',]
+        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders',]
         sidebar = Sidebar(window_names, self.controller)
         main_layout.addWidget(sidebar)
         
@@ -92,9 +92,7 @@ class OrderWindow(QWidget):
         self.populate_orders()
         self.seed_orders()
 
-
-        
-        
+        # Dummy orders, might replace them with either database or file read in.
     def seed_orders(self):
         self.order_manager.add_order(Order("ORD123", "2025-04-10", "Standard", 45.99))
         self.order_manager.add_order(Order("ORD124", "2025-04-11", "Express", 99.49))
@@ -124,7 +122,7 @@ class OrderWindow(QWidget):
                 item.setFont(font)
                 self.order_table.setItem(row, col, item)
 
-            # Add dropdown (QComboBox) to last column
+            # Add dropdown to last column
             combo = QComboBox()
             combo.addItems(["Pending", "Processing", "Shipped", "Delivered"])
             combo.setCurrentText(order.status)

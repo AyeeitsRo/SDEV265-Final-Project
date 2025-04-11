@@ -24,9 +24,9 @@ class Sidebar(QWidget):
             self.layout.addWidget(button)
             
             # Connect the button to the controller's corresponding method
-            if window_name == "Orders":
+            if window_name == "Outgoing Work Orders":
                 button.clicked.connect(self.controller.open_order)
-            elif window_name == "Search Products":
+            elif window_name == "Order Material":
                 button.clicked.connect(self.controller.open_search)
             elif window_name == "Inventory":
                 button.clicked.connect(self.controller.open_inventory)

@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
         main_widget.setLayout(main_layout)
         
         # Sidebar (navigation bar)       
-        window_names = ['Home', 'Search Products', 'Inventory', 'Orders',]
+        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders',]
         sidebar = Sidebar(window_names, self.controller)
         main_layout.addWidget(sidebar)
         
