@@ -87,7 +87,15 @@ class OrderWindow(QWidget):
         self.order_table.horizontalHeader().setStyleSheet("background-color: #228B22; color: #228B22;")
         self.order_table.horizontalHeader().setVisible(True)
 
-        content_layout.addWidget(self.order_table)        
+        content_layout.addWidget(self.order_table)
+        self.order_table.setAlternatingRowColors(True)
+        self.order_table.setStyleSheet("""
+            QTableWidget {
+                alternate-background-color: #f0f0f0;
+                background-color: white;
+            }
+        """)
+      
            
         self.populate_orders()
         self.seed_orders()
@@ -115,18 +123,32 @@ class OrderWindow(QWidget):
                 font = item.font()
                 font.setPointSize(10)
 
-                if col == 4 and order.status == "Delivered":
-                    item.setForeground(Qt.GlobalColor.darkGreen)
-                    font.setBold(True)
-
+                item.setForeground(Qt.GlobalColor.darkGreen)
+                font.setBold(True)
                 item.setFont(font)
+                
                 self.order_table.setItem(row, col, item)
-
+            
             # Add dropdown to last column
             combo = QComboBox()
             combo.addItems(["Pending", "Processing", "Shipped", "Delivered"])
             combo.setCurrentText(order.status)
-            combo.setStyleSheet("background-color: white; color: black; font-size: 10pt;")
+            combo.setStyleSheet("""
+                QComboBox {
+                    background-color: white;
+                    color: black;
+                    font-size: 10pt;
+                }
+                QComboBox::drop-down {
+                    background-color: #228B22;
+                }
+                QComboBox QAbstractItemView {
+                    background-color: white;
+                    color: black;
+                    selection-background-color: #228B22;
+                    selection-color: white;
+                }
+            """)
 
             # Connect status change event
             combo.currentTextChanged.connect(lambda new_status, row=row: self.change_order_status(row, new_status))

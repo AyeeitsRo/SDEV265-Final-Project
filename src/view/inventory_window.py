@@ -1,11 +1,10 @@
 
 from PyQt6.QtWidgets import (
-    QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, 
-    QHBoxLayout, QListWidget, QListWidgetItem, QMessageBox, QApplication
+    QVBoxLayout, QWidget, QLabel, 
+    QHBoxLayout, QApplication
 )
-from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QScreen
 
 from sidebar import *
 
@@ -52,7 +51,7 @@ class InventoryWindow(QWidget):
         main_layout.addLayout(content_layout)  # Add the content layout to the main layout
         
         # Add main label overhead
-        self.label = QLabel("Inventory Window") # Sets the text inside the label
+        self.label = QLabel("") # Sets the text inside the label
         self.label.setFont(QFont("Roboto", 32)) # Sets label in "roboto" style with a 32 point font
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter) # Centers the label
         self.label.setStyleSheet('color: #228B22;') # Sets label text color to dark green

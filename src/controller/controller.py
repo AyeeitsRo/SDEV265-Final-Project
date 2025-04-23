@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow, QStackedWidget
+from PyQt6.QtWidgets import QApplication
 
 from sidebar import *
 from view.inventory_window import *
@@ -41,6 +41,7 @@ class Controller:
         """Open home window"""
         self.home_view = MainWindow(self)
         self.home_view.show()
+        
             
     def open_order(self):
         """Open order window"""
@@ -61,3 +62,4 @@ class Controller:
         """Stops application from running"""
         print('Exiting System.')
         QApplication.quit()
+        

@@ -1,7 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication
-import view.main_window as mw
-import controller.controller as ctr
+import view.login_window as login
 
 """
 **main.py - Program execution file**
@@ -12,8 +11,7 @@ import controller.controller as ctr
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     
-    controller = ctr.Controller() # Initializes the controller
-    window = mw.MainWindow(controller) # Creates the main window
+    window = login.LoginWindow() # Creates the login window
     window.show() # Displays the main window
     
     sys.exit(app.exec()) # Starts the event loop
