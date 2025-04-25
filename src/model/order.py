@@ -1,9 +1,7 @@
-from datetime import datetime
-
 class Order:
     def __init__(self, order_id, date, shipping_type, price, status="Pending"):
         self.order_id = order_id
-        self.date = date
+        self.date = date  # Keep date as a string
         self.shipping_type = shipping_type
         self.price = price
         self.status = status
@@ -14,7 +12,6 @@ class Order:
     def __str__(self):
         return f"ID: {self.order_id} | Date: {self.date} | Shipping: {self.shipping_type} | Price: ${self.price:.2f} | Status: {self.status}"
 
-
 class OrderManager:
     def __init__(self):
         self.orders = []
@@ -23,10 +20,56 @@ class OrderManager:
         self.orders.append(order)
 
     def get_orders(self):
-        return self.orders
+        return sorted(self.orders, key=lambda x: x.date, reverse=True)  # Sort orders by date (newest first)
 
     def get_order_by_id(self, order_id):
         for order in self.orders:
             if order.order_id == order_id:
                 return order
         return None
+    
+    def seed_orders(self):
+        '''Created seed orders for the orders table'''
+        orders_data = [
+            ("ORD123", "2025-04-10", "Standard", 45.99, "Delivered"),
+            ("ORD124", "2025-04-11", "Express", 99.49, "Delivered"),
+            ("ORD125", "2025-04-12", "Standard", 34.76, "Delivered"),
+            ("ORD126", "2025-04-15", "Air", 89.65, "Delivered"),
+            ("ORD127", "2025-04-17", "Overnight", 156.23, "Delivered"),
+            ("ORD128", "2025-04-18", "Standard", 1564.56, "Delivered"),
+            ("ORD129", "2025-04-19", "Express", 274.89, "Delivered"),
+            ("ORD130", "2025-04-20", "Standard", 67.45, "Delivered"),
+            ("ORD131", "2025-04-21", "Air", 512.30, "Delivered"),
+            ("ORD132", "2025-04-22", "Overnight", 321.99, "Delivered"),
+            ("ORD133", "2025-04-23", "Standard", 278.00, "Delivered"),
+            ("ORD134", "2025-04-24", "Express", 899.99, "Delivered"),
+            ("ORD135", "2025-04-25", "Air", 1034.56, "Delivered"),
+            ("ORD136", "2025-04-26", "Overnight", 425.65, "Delivered"),
+            ("ORD137", "2025-04-27", "Standard", 121.70, "Delivered"),
+            ("ORD138", "2025-04-28", "Express", 1350.45, "Delivered"),
+            ("ORD139", "2025-04-29", "Air", 199.89, "Pending"),
+            ("ORD140", "2025-04-30", "Overnight", 465.30, "Delivered"),
+            ("ORD141", "2025-05-01", "Standard", 76.22, "Pending"),
+            ("ORD142", "2025-05-02", "Express", 154.50, "Shipped"),
+            ("ORD143", "2025-05-03", "Air", 875.80, "Processing"),
+            ("ORD144", "2025-05-04", "Overnight", 654.35, "Delivered"),
+            ("ORD145", "2025-05-05", "Standard", 48.99, "Shipped"),
+            ("ORD146", "2025-05-06", "Express", 264.55, "Delivered"),
+            ("ORD147", "2025-05-07", "Air", 340.80, "Shipped"),
+            ("ORD148", "2025-05-08", "Overnight", 199.95, "Delivered"),
+            ("ORD149", "2025-05-09", "Standard", 550.33, "Shipped"),
+            ("ORD150", "2025-05-10", "Express", 1234.80, "Pending"),
+            ("ORD151", "2025-05-11", "Air", 657.20, "Delivered"),
+            ("ORD152", "2025-05-12", "Overnight", 782.11, "Delivered"),
+            ("ORD153", "2025-05-13", "Standard", 899.95, "Pending"),
+            ("ORD154", "2025-05-14", "Express", 389.60, "Pending"),
+            ("ORD155", "2025-05-15", "Overnight", 512.75, "Pending"),
+        ]
+
+        # Add the hardcoded orders
+        for order_data in orders_data:
+            self.add_order(Order(order_data[0], order_data[1], order_data[2], order_data[3], order_data[4]))
+
+        # Print out all the orders, ordered from newest to oldest
+        for order in self.get_orders():
+            print(order)

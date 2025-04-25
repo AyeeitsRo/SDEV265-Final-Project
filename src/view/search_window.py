@@ -1,7 +1,7 @@
 
 from PyQt6.QtWidgets import (
-    QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, 
-    QHBoxLayout, QListWidget, QListWidgetItem, QMessageBox, QApplication
+    QFrame, QVBoxLayout, QWidget, QLabel, 
+    QHBoxLayout, QApplication
 )
 from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt
@@ -42,10 +42,22 @@ class SearchWindow(QWidget):
         main_layout = QHBoxLayout()
         self.setLayout(main_layout)
         
-        # Sidebar (navigation bar)       
-        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders',]
+        # Sidebar (navigation bar) 
+        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders', ]
+        sidebar_frame = QFrame()  # Create a QFrame to wrap the Sidebar
+        sidebar_frame.setFixedWidth(200)
+
+        # Create layout for the frame and add Sidebar to it
+        frame_layout = QVBoxLayout()
+        frame_layout.setContentsMargins(0, 0, 0, 0)
+        frame_layout.setSpacing(0)
+
         sidebar = Sidebar(window_names, self.controller)
-        main_layout.addWidget(sidebar)
+        frame_layout.addWidget(sidebar)
+        sidebar_frame.setLayout(frame_layout)
+
+        # Add the frame to the main layout
+        main_layout.addWidget(sidebar_frame)
         
         # Main content layout (label)
         content_layout = QVBoxLayout()  # Create a vertical layout for the content

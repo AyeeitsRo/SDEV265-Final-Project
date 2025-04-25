@@ -15,3 +15,4 @@ if __name__ == "__main__":
     window.show() # Displays the main window
     
     sys.exit(app.exec()) # Starts the event loop
+    

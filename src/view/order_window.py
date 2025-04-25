@@ -1,6 +1,6 @@
 
 from PyQt6.QtWidgets import (
-    QPushButton, QVBoxLayout, QWidget, QLabel, QHeaderView,
+    QFrame, QVBoxLayout, QWidget, QLabel, QHeaderView,
     QHBoxLayout, QApplication, QTableWidget, QTableWidgetItem,
     QComboBox, 
 )
@@ -9,7 +9,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 
 from sidebar import *
-from model.order import Order, OrderManager
+from model.order import OrderManager
 
 
 class OrderWindow(QWidget):
@@ -28,7 +28,8 @@ class OrderWindow(QWidget):
         self.setWindowTitle("Inventory System") # Sets title of window
         self.resize(1700, 1000) # Sets window size
         
-        self.order_manager = OrderManager() 
+        self.order_manager = OrderManager()
+        self.order_manager.seed_orders() 
         
         # Obtains screen geometry
         screen = QApplication.primaryScreen()
@@ -46,10 +47,22 @@ class OrderWindow(QWidget):
         main_layout = QHBoxLayout()
         self.setLayout(main_layout)
         
-        # Sidebar (navigation bar)       
-        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders',]
+        # Sidebar (navigation bar) 
+        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders', ]
+        sidebar_frame = QFrame()  # Create a QFrame to wrap the Sidebar
+        sidebar_frame.setFixedWidth(200)  
+
+        # Create layout for the frame and add Sidebar to it
+        frame_layout = QVBoxLayout()
+        frame_layout.setContentsMargins(0, 0, 0, 0)
+        frame_layout.setSpacing(0)
+
         sidebar = Sidebar(window_names, self.controller)
-        main_layout.addWidget(sidebar)
+        frame_layout.addWidget(sidebar)
+        sidebar_frame.setLayout(frame_layout)
+
+        # Add the frame to the main layout
+        main_layout.addWidget(sidebar_frame)
         
         # Main content layout (label)
         content_layout = QVBoxLayout()  # Create a vertical layout for the content
@@ -81,6 +94,7 @@ class OrderWindow(QWidget):
         self.order_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)  # Make cells read-only
         self.order_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.order_table.setSelectionMode(QTableWidget.SelectionMode.SingleSelection)
+        self.order_table.verticalHeader().setVisible(False)
         self.order_table.horizontalHeader().setStretchLastSection(True)
         self.order_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         
@@ -97,14 +111,6 @@ class OrderWindow(QWidget):
         """)
       
            
-        self.populate_orders()
-        self.seed_orders()
-
-        # Dummy orders, might replace them with either database or file read in.
-    def seed_orders(self):
-        self.order_manager.add_order(Order("ORD123", "2025-04-10", "Standard", 45.99))
-        self.order_manager.add_order(Order("ORD124", "2025-04-11", "Express", 99.49))
-        self.order_manager.add_order(Order("ORD125", "2025-04-12", "Standard", 34.76))
         self.populate_orders()
 
 

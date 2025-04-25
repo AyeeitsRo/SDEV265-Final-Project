@@ -19,23 +19,6 @@ class Controller:
     """
     def __init__(self):
         """Initalize the controller """ 
-
-        '''# Initialize views
-        self.home_view = MainWindow(self)
-        self.search_view = SearchWindow(self)
-        self.order_view = OrderWindow(self)
-        self.inventory_view = InventoryWindow(self)
-
-        # Initialize stacked widget to hold views
-        self.stacked_widget = QStackedWidget()
-        self.stacked_widget.addWidget(self.home_view)
-        self.stacked_widget.addWidget(self.order_view)
-        self.stacked_widget.addWidget(self.search_view)
-        self.stacked_widget.addWidget(self.inventory_view)
-
-        # Set the stacked widget as the central widget
-        if isinstance(self.home_view, QMainWindow):
-            self.home_view.setCentralWidget(self.stacked_widget)'''
     
     def open_home(self):
         """Open home window"""
@@ -60,6 +43,10 @@ class Controller:
     
     def exit_app(self):
         """Stops application from running"""
-        print('Exiting System.')
         QApplication.quit()
+        
+    def clear_search(self):
+        """Clear the search box and reset the table data in the inventory view."""
+        if self.inventory_view:
+            self.inventory_view.clear_search()  # Clear search box in Invento
         
