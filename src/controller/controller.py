@@ -4,7 +4,7 @@ from sidebar import *
 from view.inventory_window import *
 from view.main_window import *
 from view.order_window import *
-from view.search_window import *
+from view.inventory_order_window import *
 
 
 class Controller:
@@ -33,7 +33,7 @@ class Controller:
     
     def open_search(self):
         """Open search window"""
-        self.search_view = SearchWindow(self)
+        self.search_view = InventoryOrderWindow(self)
         self.search_view.show()
     
     def open_inventory(self):

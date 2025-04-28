@@ -67,7 +67,7 @@ class InventoryWindow(QWidget):
             border: 2px solid #228B22;
             border-radius: 4px;
             padding: 5px;
-            color: black;  /* Set text color to black */
+            color: black;
         """)
         self.search_box.textChanged.connect(self.on_search)
 
@@ -287,5 +287,5 @@ class InventoryWindow(QWidget):
         
     def clear_search(self):
         """Clear the search box and reset the table data."""
-        self.search_box.clear()  # Clears the text in the search box
-        self.populate_inventory()  # Resets the table to show all items
+        self.search_box.clear() 
+        self.populate_inventory()  
