@@ -5,6 +5,7 @@ from view.inventory_window import *
 from view.main_window import *
 from view.order_window import *
 from view.inventory_order_window import *
+from model.sku_order import handle_order_submission
 
 
 class Controller:
@@ -48,5 +49,9 @@ class Controller:
     def clear_search(self):
         """Clear the search box and reset the table data in the inventory view."""
         if self.inventory_view:
-            self.inventory_view.clear_search()  # Clear search box in Invento
+            self.inventory_view.clear_search()
+            
+    def handle_submit(self, view):
+        """Handle the submit button click from InventoryOrderWindow."""
+        handle_order_submission(view)
         

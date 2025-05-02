@@ -6,7 +6,10 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 
 from sidebar import *
+
 from model.order import OrderManager
+from model.inventory_data import *
+from model.incoming_orders import orders
 
 
 class MainWindow(QMainWindow):
@@ -14,31 +17,22 @@ class MainWindow(QMainWindow):
     The main window of the inventory system.
     '''
     def __init__(self, controller):
-        """
-        Initalizes the MainWindow
-
-        Args:
-            controller (Controller): The application's main controller.
-        """
         super().__init__()
         self.controller = controller
-        self.setWindowTitle("Inventory System")  # Sets title of window
-        self.resize(1700, 1000)  # Sets window size
+        self.setWindowTitle("Inventory System")
+        self.resize(1700, 1000)
         
-        self.order_manager = OrderManager()  # Order manager to access orders
+        self.order_manager = OrderManager()
         self.order_manager.seed_orders()
 
-        # Obtains screen geometry
+        # Center window
         screen = QApplication.primaryScreen()
         screen_geometry = screen.availableGeometry()
-        # Calculates position to center the window
         x = (screen_geometry.width() - self.width()) // 2
         y = (screen_geometry.height() - self.height()) // 2
-        # Sets the geometry of the window
         self.setGeometry(x, y, self.width(), self.height())
-        
-        # Set background color
-        self.setStyleSheet('background-color: #FAF9F6;')  # Off White Color
+
+        self.setStyleSheet('background-color: #FAF9F6;')
         
         # Main Layout
         main_widget = QWidget()
@@ -46,12 +40,11 @@ class MainWindow(QMainWindow):
         main_layout = QHBoxLayout()
         main_widget.setLayout(main_layout)
         
-        # Sidebar (navigation bar) 
-        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders', ]
-        sidebar_frame = QFrame()  # Create a QFrame to wrap the Sidebar
-        sidebar_frame.setFixedWidth(200)  # Match width with Sidebar
+        # Sidebar
+        window_names = ['Home', 'Order Material', 'Inventory', 'Outgoing Work Orders']
+        sidebar_frame = QFrame()
+        sidebar_frame.setFixedWidth(200)
 
-        # Create layout for the frame and add Sidebar to it
         frame_layout = QVBoxLayout()
         frame_layout.setContentsMargins(0, 0, 0, 0)
         frame_layout.setSpacing(0)
@@ -59,67 +52,57 @@ class MainWindow(QMainWindow):
         sidebar = Sidebar(window_names, self.controller)
         frame_layout.addWidget(sidebar)
         sidebar_frame.setLayout(frame_layout)
-
-        # Add the frame to the main layout
         main_layout.addWidget(sidebar_frame)
         
-        # Main content layout (label)
-        content_layout = QVBoxLayout()  # Create a vertical layout for the content
-        main_layout.addLayout(content_layout)  # Add the content layout to the main layout
-        
-        # Add main label overhead
-        self.label = QLabel("📦 Inventory System Dashboard")  # Title for the page
+        # Content Layout
+        content_layout = QVBoxLayout()
+        main_layout.addLayout(content_layout)
+
+        # Title
+        self.label = QLabel("📦 Inventory System Dashboard")
         self.label.setFont(QFont("Roboto", 32))
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.label.setStyleSheet('color: #228B22;')
         content_layout.addWidget(self.label)
 
-        # --- DASHBOARD CARDS ---
+        # Dashboard Cards
         dashboard_layout = QVBoxLayout()
         dashboard_layout.addStretch()
         content_layout.addLayout(dashboard_layout)
-        
+
         # Orders to Be Verified
         orders_box = self.create_info_box(
-            title = "✅ Orders to Be Verified",
-            color = "#228B22",
-            background = "#E6F4EA"
+            title="✅ Orders to Be Verified",
+            color="#228B22",
+            background="#E6F4EA"
         )
         dashboard_layout.addWidget(orders_box)
-
-        self.pending_orders_layout = QVBoxLayout()  # Layout to show pending orders
         self.pending_orders_layout = orders_box.layout()
-
-        # Populate Pending Orders (after loading order data)
         self.populate_pending_orders()
 
         # Inventory Arriving Soon
         arriving_box = self.create_info_box(
-            title = "🚚 Inventory Arriving Soon",
-            color = "#FF8F00",
-            background = "#FFF8E1"
+            title="🚚 Inventory Arriving Soon",
+            color="#FF8F00",
+            background="#FFF8E1"
         )
         dashboard_layout.addWidget(arriving_box)
+        self.arriving_orders_layout = arriving_box.layout()
+        self.populate_arriving_soon_orders()
 
         # Low Inventory Alerts
-        alerts_box = self.create_info_box(
-            title = "⚠️ Low Inventory Alerts",
-            color = "#D32F2F",
-            background = "#FDECEA"
+        self.low_inventory_box = self.create_info_box(
+            title="⚠️ Low Inventory Alerts",
+            color="#D32F2F",
+            background="#FDECEA"
         )
-        dashboard_layout.addWidget(alerts_box)
+        dashboard_layout.addWidget(self.low_inventory_box)
+        self.populate_low_inventory()
 
     def populate_pending_orders(self):
-        """
-        Populates the 'Orders to be Verified' section with orders awaiting approval.
-        """
-        # Create a QWidget to hold the order widgets
         orders_container = QWidget()
-        orders_layout = QVBoxLayout(orders_container)  # Use a new layout for the container
-        
+        orders_layout = QVBoxLayout(orders_container)
         orders = self.order_manager.get_orders()
-
-        # Filter orders that are Pending
         pending_orders = [order for order in orders if order.status == "Pending"]
 
         if not pending_orders:
@@ -131,29 +114,81 @@ class MainWindow(QMainWindow):
             order_widget = QWidget()
             order_widget.setStyleSheet("background-color: #E6F4EA;")
             order_layout = QVBoxLayout()
-            
             order_label = QLabel(f"Order ID: {order.order_id} - Awaiting Approval")
-            order_label.setStyleSheet("""
-                                    font-size: 18px; 
-                                    color: #000000;
-                                    border: none;
-                                    """)
-            
+            order_label.setStyleSheet("font-size: 18px; color: #000000;")
             order_layout.addWidget(order_label)
-            order_layout.setAlignment(Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignLeft)
             order_widget.setLayout(order_layout)
             orders_layout.addWidget(order_widget)
 
-        # Now create a QScrollArea and set it as the scrollable widget
         scroll_area = QScrollArea()
-        scroll_area.setWidgetResizable(True)  # Ensure the widget inside scroll area is resizable
-        scroll_area.setWidget(orders_container)  # Set the orders container widget as the scrollable widget
-        
-        # Add the scroll area to the main content layout
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(orders_container)
         self.pending_orders_layout.addWidget(scroll_area)
 
+    def populate_arriving_soon_orders(self):
+        # Filter orders that are 'Shipped'
+        arriving_soon_orders = [order for order in orders if order["status"] == "Shipped"]
 
+        container = QWidget()
+        layout = QVBoxLayout(container)
 
+        if not arriving_soon_orders:
+            no_orders_label = QLabel("No arriving orders found.")
+            no_orders_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            layout.addWidget(no_orders_label)
+
+        for order in arriving_soon_orders:
+            # Accessing the order details from the dictionary
+            order_id = order["id"]
+            arrival_date = order["arrival"]
+            item_count = order["items"]
+
+            # Creating the label to display Order ID and Arrival Date
+            label = QLabel(f"Order Number: {order_id} — Arriving on {arrival_date}")
+            label.setStyleSheet("font-size: 18px; color: black;")
+            layout.addWidget(label)
+
+        # Create a scroll area to allow the orders to be scrollable
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(container)
+
+        # Now, add the scroll area to the arriving orders layout
+        self.arriving_orders_layout.addWidget(scroll_area)
+
+    def populate_low_inventory(self):
+        low_inventory_items = [item for item in inventory_data if item[4] == 0]
+        container = QWidget()
+        container_layout = QVBoxLayout(container)
+
+        if not low_inventory_items:
+            no_low_inventory_label = QLabel("No items need to be reordered.")
+            no_low_inventory_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            no_low_inventory_label.setStyleSheet("color: black; font-size: 16px;")
+            container_layout.addWidget(no_low_inventory_label)
+
+        for item in low_inventory_items:
+            sku_label = QLabel(f"SKU: {item[2]} needs to be reordered!")
+            sku_label.setStyleSheet("font-size: 18px; color: black;")
+            sku_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            container_layout.addWidget(sku_label)
+
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(container)
+
+        low_inventory_layout = self.low_inventory_box.layout()
+        while low_inventory_layout.count():
+            item = low_inventory_layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+        title_label = QLabel("⚠️ Low Inventory Alerts")
+        title_label.setFont(QFont("Roboto", 16, QFont.Weight.Bold))
+        title_label.setStyleSheet("color: #D32F2F;")
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        low_inventory_layout.addWidget(title_label)
+        low_inventory_layout.addWidget(scroll_area)
 
     def create_info_box(self, title, color, background):
         box = QFrame()
@@ -163,7 +198,7 @@ class MainWindow(QMainWindow):
                 border: none;
             }}
         """)
-        box.setFixedSize(1000, 250)  # Wider and taller box
+        box.setFixedSize(1000, 250)
 
         layout = QVBoxLayout()
         label = QLabel(title)
