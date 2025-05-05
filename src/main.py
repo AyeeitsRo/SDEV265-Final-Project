@@ -1,7 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QApplication
 import view.login_window as login
-
 """
 **main.py - Program execution file**
 

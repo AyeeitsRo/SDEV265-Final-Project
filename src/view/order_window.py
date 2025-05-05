@@ -69,7 +69,7 @@ class OrderWindow(QWidget):
         main_layout.addLayout(content_layout)  # Add the content layout to the main layout
         
         # Add main label overhead
-        self.label = QLabel("Orders") # Sets the text inside the label
+        self.label = QLabel("Work Orders") # Sets the text inside the label
         self.label.setFont(QFont("Roboto", 32)) # Sets label in "roboto" style with a 32 point font
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter) # Centers the label
         self.label.setStyleSheet('color: #228B22;') # Sets label text color to dark green
