@@ -1,6 +1,5 @@
 
-
-
+# ===Inventory Data held in a list===
 inventory_data = [
                 ["Hammer", "16oz claw hammer", "HAM-0001", 14.99, 25],
                 ["Hammer", "20oz framing hammer", "HAM-0002", 19.99, 0],
@@ -107,18 +106,23 @@ inventory_data = [
 
 
 def check_order_validity(entries):
-    errors = []
-    valid_entries = []
+    """
+    Checks the validity of order entries by comparing the SKU against the inventory.
+    Returns lists of errors and valid entries.
+    """
+    errors = []  # Initialize an empty list to collect errors
+    valid_entries = []  # Initialize an empty list to collect valid entries
 
+    # Loop through each SKU and quantity in the provided entries
     for sku, qty in entries:
-        # Find the item by SKU from the inventory list
+        # Find the item by SKU from the inventory data. SKU is at index 2 in each item.
         item = next((item for item in inventory_data if item[2] == sku), None)  # item[2] is the SKU
         
-        if not item:
-            errors.append(f"SKU: {sku} not found in inventory.")
-            continue
+        if not item:  # If the item wasn't found (i.e., item is None)
+            errors.append(f"SKU: {sku} not found in inventory.")  # Add an error message to the errors list
+            continue  # Skip to the next entry
         
-        # If valid, add to valid entries list
+        # If valid, add the SKU and quantity to the valid entries list
         valid_entries.append((sku, qty))
     
-    return errors, valid_entries
+    return errors, valid_entries  # Return the list of errors and valid entries

@@ -1,35 +1,61 @@
 class Order:
     def __init__(self, order_id, date, shipping_type, price, status="Pending"):
-        self.order_id = order_id
-        self.date = date  # Keep date as a string
-        self.shipping_type = shipping_type
-        self.price = price
-        self.status = status
+        """
+        Initializes an order with ID, date, shipping type, price, and status.
+        Default status is 'Pending' if not provided.
+        """
+        self.order_id = order_id  # Store the order's unique ID
+        self.date = date  # Store the order's date as a string
+        self.shipping_type = shipping_type  # Store the shipping type (Standard, Express, etc.)
+        self.price = price  # Store the price of the order
+        self.status = status  # Store the order's status (default to 'Pending')
 
     def change_status(self, new_status):
-        self.status = new_status
+        """
+        Changes the status of the order.
+        """
+        self.status = new_status  # Update the order's status to the new value
 
     def __str__(self):
+        """
+        String representation of the order for easy printing.
+        """
         return f"ID: {self.order_id} | Date: {self.date} | Shipping: {self.shipping_type} | Price: ${self.price:.2f} | Status: {self.status}"
 
 class OrderManager:
     def __init__(self):
-        self.orders = []
+        """
+        Initializes an OrderManager instance with an empty list of orders.
+        """
+        self.orders = []  # List to hold all the orders managed by this instance
 
     def add_order(self, order: Order):
-        self.orders.append(order)
+        """
+        Adds a new order to the orders list.
+        """
+        self.orders.append(order)  # Add the provided order to the list of orders
 
     def get_orders(self):
-        return sorted(self.orders, key=lambda x: x.date, reverse=True)  # Sort orders by date (newest first)
+        """
+        Returns the orders sorted by date (newest first).
+        """
+        return sorted(self.orders, key=lambda x: x.date, reverse=True)  # Sort orders by date in descending order
 
     def get_order_by_id(self, order_id):
+        """
+        Returns the order that matches the provided order ID.
+        If no order is found, returns None.
+        """
         for order in self.orders:
             if order.order_id == order_id:
-                return order
-        return None
+                return order  # Return the matching order
+        return None  # Return None if no matching order is found
     
     def seed_orders(self):
-        '''Created seed orders for the orders table'''
+        """
+        Seeds the orders list with hardcoded order data for testing or initial setup.
+        """
+        # Sample order data as tuples (order_id, date, shipping_type, price, status)
         orders_data = [
             ("ORD123", "2025-04-10", "Standard", 45.99, "Delivered"),
             ("ORD124", "2025-04-11", "Express", 99.49, "Delivered"),
@@ -66,10 +92,11 @@ class OrderManager:
             ("ORD155", "2025-05-15", "Overnight", 512.75, "Pending"),
         ]
 
-        # Add the hardcoded orders
+        # Add each seed order to the orders list
         for order_data in orders_data:
+            # Each order_data is a tuple with order_id, date, shipping_type, price, and status
             self.add_order(Order(order_data[0], order_data[1], order_data[2], order_data[3], order_data[4]))
 
-        # Print out all the orders, ordered from newest to oldest
+        # Print out all the orders in descending order of date (newest first)
         for order in self.get_orders():
-            print(order)
+            print(order)  # Print the string representation of each order

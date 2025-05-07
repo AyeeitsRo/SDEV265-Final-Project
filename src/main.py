@@ -5,7 +5,7 @@ import view.login_window as login
 **main.py - Program execution file**
 
 **Purpose**
-- 
+- Used to initialize the program and open the login window.
 """
 if __name__ == "__main__":
     app = QApplication(sys.argv)

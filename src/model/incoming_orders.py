@@ -1,3 +1,4 @@
+# ===Order data held in a list===
 orders = [
             {"id": "ORD-001", "arrival": "2025-05-01", "status": "Pending", "items": 3},
             {"id": "ORD-002", "arrival": "2025-05-04", "status": "Shipped", "items": 7},
