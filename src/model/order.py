@@ -96,7 +96,3 @@ class OrderManager:
         for order_data in orders_data:
             # Each order_data is a tuple with order_id, date, shipping_type, price, and status
             self.add_order(Order(order_data[0], order_data[1], order_data[2], order_data[3], order_data[4]))
-
-        # Print out all the orders in descending order of date (newest first)
-        for order in self.get_orders():
-            print(order)  # Print the string representation of each order

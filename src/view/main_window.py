@@ -1,9 +1,9 @@
 
 from PyQt6.QtWidgets import (
     QMainWindow, QVBoxLayout, QWidget, QLabel, QFrame,
-    QHBoxLayout, QApplication, QScrollArea
+    QHBoxLayout, QApplication, QScrollArea, QStackedLayout
 )
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QPixmap
 from PyQt6.QtCore import Qt
 
 from sidebar import Sidebar
@@ -64,12 +64,26 @@ class MainWindow(QMainWindow):
         content_layout = QVBoxLayout()
         main_layout.addLayout(content_layout)
 
-        # Dashboard title
-        self.label = QLabel("📦 Inventory System Dashboard")
-        self.label.setFont(QFont("Roboto", 32))
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setStyleSheet('color: #228B22;')
-        content_layout.addWidget(self.label)
+
+        # === Banner frame with background image ===
+        banner_frame = QFrame()
+        banner_frame.setFixedHeight(180)
+
+        # Background image label
+        banner_image_label = QLabel()
+        banner_image_label.setPixmap(
+            QPixmap("resources/home-banner.jpg").scaledToHeight(
+                390, Qt.TransformationMode.SmoothTransformation
+            )
+        )
+        banner_image_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+        banner_layout = QStackedLayout()
+        banner_layout.addWidget(banner_image_label)
+        banner_frame.setLayout(banner_layout)
+
+        # Add to your existing layout
+        content_layout.addWidget(banner_frame)
 
         # Layout for dashboard info cards
         dashboard_layout = QVBoxLayout()
@@ -78,30 +92,33 @@ class MainWindow(QMainWindow):
 
         # === Dashboard Card: Pending Orders ===
         orders_box = self.create_info_box(
-            title="✅ Orders to Be Verified",
-            color="#228B22",
-            background="#E6F4EA"
+            title = "Orders to Be Verified",
+            color = "#228B22",
+            background = "#E6F4EA"
         )
+        orders_box.setFixedWidth(1550)
         dashboard_layout.addWidget(orders_box)
         self.pending_orders_layout: QVBoxLayout = orders_box.layout()
         self.populate_pending_orders()  # Fill in pending orders
 
         # === Dashboard Card: Arriving Soon ===
         arriving_box = self.create_info_box(
-            title="🚚 Inventory Arriving Soon",
-            color="#FF8F00",
-            background="#FFF8E1"
+            title = "Inventory Arriving Soon",
+            color = "#FF8F00",
+            background = "#FFF8E1"
         )
+        arriving_box.setFixedWidth(1550)
         dashboard_layout.addWidget(arriving_box)
         self.arriving_orders_layout: QVBoxLayout = arriving_box.layout()
         self.populate_arriving_soon_orders()  # Fill in arriving inventory
 
         # === Dashboard Card: Low Inventory ===
         self.low_inventory_box: QFrame = self.create_info_box(
-            title="⚠️ Low Inventory Alerts",
-            color="#D32F2F",
-            background="#FDECEA"
+            title = "Low Inventory Alerts",
+            color = "#D32F2F",
+            background = "#FDECEA"
         )
+        self.low_inventory_box.setFixedWidth(1550)
         dashboard_layout.addWidget(self.low_inventory_box)
         self.populate_low_inventory()  # Fill in low stock items
 
