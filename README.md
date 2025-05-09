@@ -23,31 +23,29 @@ A desktop application built with **Python** and **PyQt6** for managing inventory
 
 SDEV265-FINAL-PROJECT/
 ├── resources/
-│   ├── company-logo.png
-│   └── home-banner.jpg
+│ ├── company-logo.png
+│ └── home-banner.jpg
 │
 ├── src/
-│   ├── main.py
-│   ├── sidebar.py
-│   │
-│   ├── controller/
-│   │   └── controller.py
-│   │
-│   ├── model/
-│   │   ├── incoming_orders.py
-│   │   ├── inventory.py
-│   │   ├── inventory_data.py
-│   │   ├── order.py
-│   │   └── sku_order.py
-│   │
-│   └── view/
-│       ├── inventory_order_window.py
-│       ├── inventory_window.py
-│       ├── login_window.py
-│       ├── main_window.py
-│       └── order_window.py
-│
-└── README.md
+│ ├── main.py
+│ ├── sidebar.py
+│ │
+│ ├── controller/
+│ │ └── controller.py
+│ │
+│ ├── model/
+│ │ ├── incoming_orders.py
+│ │ ├── inventory.py
+│ │ ├── inventory_data.py
+│ │ ├── order.py
+│ │ └── sku_order.py
+│ │
+│ └── view/
+│ ├── inventory_order_window.py
+│ ├── inventory_window.py
+│ ├── login_window.py
+│ ├── main_window.py
+│ └── order_window.py
 
 
 ## 🖥️ Installation
